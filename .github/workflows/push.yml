@@ -32,4 +32,7 @@ jobs:
       run: |
         go test -c github.com/google/nftables
         sudo nft --version
+        sudo nft flush ruleset
+        sudo nft add table inet filter
+        sudo nft add ct expectation inet filter expect '{ protocol tcp ; dport 53 ; timeout 2s ; size 1 ; }'
         sudo NLDEBUG=1 ./nftables.test -test.v -run_system_tests -test.run=TestCtExpect
